@@ -14,14 +14,13 @@ export default async function getTxBuilder(): Promise<TxBuilder>
     {
         try {
             const pp = await koios.epoch.protocolParams() as Readonly<ProtocolParamters>;
-            
-            // just in kase koios returns protocol paramters that don't look good
+
             _cachedTxBuilder = new TxBuilder(
                 "testnet",
                 pp
             );
         }
-        catch {
+        catch { // just in kase koios returns protocol paramters that don't look good
             // if that happens then use the default protocol paramters
             // !!! IMPORTANT !!! use only as fallback;
             // parameters might (and will) change from the real world
