@@ -3,8 +3,8 @@ import { useNetwork, useWallet } from "@meshsdk/react";
 
 import style from "@/styles/Home.module.css";
 import ConnectionHandler from "@/components/ConnectionHandler";
-import { lockTx } from "@/txns/lockTx";
-import { unlockTx } from "@/txns/unlockTx";
+import { lockTx } from "@/offchain/lockTx";
+import { unlockTx } from "@/offchain/unlockTx";
 
 export default function Home()
 {
