@@ -13,14 +13,9 @@ function toPlutsValue( units: Asset[] ): Value
 
         const policy = new Hash28( unit.slice( 0, 56 ) );
 
-        const assetName = toAscii( fromHex( unit.slice( 56 ) ) )
+        const assetName = fromHex( unit.slice( 56 )  )
 
-        return new Value([
-            {
-                policy,
-                assets: { [assetName]: BigInt(quantity) },
-            }
-        ]);
+        return Value.singleAsset( policy, assetName, BigInt( quantity ) );
     })
     .reduce( (a, b) => Value.add( a, b ) );
 }
