@@ -3,8 +3,9 @@ import { useNetwork, useWallet } from "@meshsdk/react";
 
 import style from "../styles/Home.module.css";
 import ConnectionHandler from "../components/ConnectionHandler";
-import { lockTx } from "../offchain/lockTx";
-import { unlockTx } from "../offchain/unlockTx";
+import { createAccountTx } from "@/offchain/createAccountTx";
+import { mintErc20 } from "@/offchain/mintErc20";
+import { transferTx } from "@/offchain/transferTx";
 
 export default function Home()
 {
@@ -36,15 +37,13 @@ export default function Home()
         )
     }
 
-    function onLock()
+    function handleTx( getTx: Promise<string> )
     {
-        lockTx( wallet )
-        // lock transaction created successfully
+        getTx
         .then( txHash => toast({
-            title: `lock tx submitted: https://preprod.cardanoscan.io/transaction/${txHash}`,
+            title: `tx submitted: https://preview.cardanoscan.io/transaction/${txHash}`,
             status: "success"
         }))
-        // lock transaction failed
         .catch( e => {
             toast({
                 title: `something went wrong`,
@@ -54,22 +53,21 @@ export default function Home()
         });
     }
 
-    function onUnlock()
+    function onCreateAccount()
     {
-        unlockTx( wallet )
-        // unlock transaction created successfully
-        .then( txHash => toast({
-            title: `unlock tx submitted: https://preprod.cardanoscan.io/transaction/${txHash}`,
-            status: "success"
-        }))
-        // unlock transaction failed
-        .catch( e => {
-            toast({
-                title: `something went wrong`,
-                status: "error"
-            });
-            console.error( e )
-        });
+        handleTx( createAccountTx( wallet ) );
+    }
+    function onMintErc20()
+    {
+        handleTx( mintErc20( wallet ) );
+    }
+    function onTransfer()
+    {
+        handleTx( transferTx( wallet ) );
+    }
+    function onChangeState()
+    {
+        handleTx( mintErc20( wallet ) );
     }
 
     return (
@@ -81,8 +79,9 @@ export default function Home()
             {
                 connected &&
                 <>
-                <Button onClick={onLock} >Lock 10 tADA</Button>
-                <Button onClick={onUnlock} >Unlock</Button>
+                <Button onClick={onCreateAccount} >Create Account</Button>
+                <Button onClick={onMintErc20} >Mint Erc20</Button>
+                <Button onClick={onTransfer} >Transfer</Button>
                 </>
             }
         </div>

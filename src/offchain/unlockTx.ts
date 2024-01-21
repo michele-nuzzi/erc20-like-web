@@ -1,6 +1,6 @@
 import { Tx } from "@harmoniclabs/plu-ts";
 import { BrowserWallet } from "@meshsdk/core";
-import { koios } from "./koios";
+import { blockfrost } from "./blockfrost";
 
 async function getUnlockTx( wallet: BrowserWallet ): Promise<Tx>
 {
@@ -16,5 +16,5 @@ export async function unlockTx( wallet: BrowserWallet ): Promise<string>
         true // partial sign because we have smart contracts in the transaction
     );
 
-    return (await koios.tx.submit( Tx.fromCbor( txStr ) )).toString();
+    return (await blockfrost.tx.submit( Tx.fromCbor( txStr ) )).toString();
 }
